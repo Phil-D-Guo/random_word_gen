@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictomania Word Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            font-size: 5rem;
+            margin: 20px 0;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            height: 50vh;
+            /* padding: 200px 200px; */
+            font-size: 2rem;
+            color: purple;
+            border: none;
+            background-color: #007bff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="randomWord">Press the button to get a word</h1>
+    <button onclick="generateWord()">Generate Word</button>
+
+    <script>
+        // List of words for Pictomania (example words)
+        // const words = [
+        //     "Elephant", "Mountain", "Pineapple", "Spaceship", "Castle", "Tiger", "Volcano", "Umbrella", "Giraffe", "Rainbow",
+        //     "Knight", "Bridge", "Waterfall", "Guitar", "Snowman", "Bicycle", "Dragon", "Dinosaur", "Helicopter", "Pirate"
+        // ];
+        const words_1 = [
+                "Apple", "Balloon", "Car", "Dog", "Elephant", "Fish", "Guitar", "House", "Ice cream", "Jacket",
+                "Kite", "Lemon", "Mountain", "Nest", "Octopus", "Pillow", "Queen", "Rainbow", "Snowman", "Tiger",
+                "Umbrella", "Violin", "Watermelon", "Xylophone", "Zebra", "Airplane", "Bridge", "Cake", "Dinosaur",
+                "Eagle", "Fence", "Garden", "Hat", "Island", "Jellyfish", "Key", "Lamp", "Monkey", "Necklace",
+                "Owl", "Pizza", "Quill", "Robot", "Sun", "Turtle", "Volcano", "Whale", "Yo-yo", "Zebra crossing",
+                "Basket", "Crown", "Drum", "Envelope", "Firetruck", "Glasses", "Hammer", "Igloo", "Juice", "Kangaroo",
+                "Ladder", "Mask", "Needle", "Ocean", "Penguin", "Quilt", "Rope", "Spoon", "Train", "Unicorn",
+                "Vase", "Windmill", "Yard", "Anchor", "Broom", "Candle", "Donut", "Engine", "Flag", "Globe",
+                "Helicopter", "Insect", "Jam", "Knife", "Lion", "Mirror", "Napkin", "Orange", "Paintbrush", "Quokka",
+                "Road", "Squirrel", "Tent", "Vacuum", "Watch", "Yogurt", "Zipper", "Bicycle", "Cactus", "Dolphin",
+                "Eggplant", "Feather", "Grapes", "Hammerhead", "Ink", "Jigsaw", "Kettle", "Lighthouse", "Mouse",
+                "Net", "Ostrich", "Panda", "Quilt pattern", "Ring", "Star", "Teapot", "Vest", "Wrench", "Yo-yo trick",
+                "Zigzag", "Ant", "Bear", "Candleholder", "Daffodil", "Egg", "Flamingo", "Giraffe", "Hotdog", "Igloo door",
+                "Jungle", "Keychain", "Lantern", "Map", "Nestling", "Ostrich egg", "Paperclip", "Quicksand", "Rose",
+                "Seashell", "Telescope", "Unicorn horn", "Violin case", "Waterfall", "Yawn", "Bridge tower", "Bison",
+                "Corn", "Dolphin fin", "Easel", "Feather pen", "Guitar string", "Harp", "Igloo window", "Jack-o'-lantern",
+                "Kite tail", "Lantern pole", "Mask strap", "Nest box", "Oboe", "Paint can", "Quilt frame", "Rabbit",
+                "Sled", "Tinsel", "Van", "Wasp", "X-ray", "Zebra stripes", "Blimp", "Campfire", "Desk", "Envelope seal",
+                "Fishbowl", "Gumball", "Hummingbird", "Ink pen", "Jellybean", "Kaleidoscope", "Lighthouse beam",
+                "Mailbox", "Napkin ring", "Opal", "Pear", "Quilted pillow", "Raft", "Skateboard", "Tractor", "Vase filler",
+                "Woodpecker", "Yardstick", "Beanstalk", "Camera", "Domino", "Eiffel Tower", "Fortune cookie",
+                "Garden gnome", "Hedgehog", "Igneous rock", "Jet", "Kazoo", "Log", "Mat", "Nesting doll", "Ox",
+                "Pig", "Quiver", "Raccoon", "Sandbox", "Treasure", "Ukulele", "Velvet", "Water hose", "Xylophone stick",
+                "Zamboni", "Basketball", "Chameleon", "Doorbell", "Earmuffs", "Frisbee", "Glue", "Honeycomb", "Icicle",
+                "Jack", "Knapsack", "Lava", "Marbles", "Necklace chain", "Owl feather", "Paint roller", "Quokka", "Ribbon",
+                "Snow globe", "Tambourine", "Umbrella stand", "Vine", "Whisk", "Yard sign", "Zookeeper", "Book",
+                "Candlewick", "Dandelion", "Elbow pad", "Flute", "Grapevine", "Hammock", "Ice cube", "Jackhammer",
+                "Kazoo reed", "Lawn chair", "Moose", "Nest ornament", "Otter", "Pumpkin", "Quince", "Rocking horse",
+                "Surfboard", "Towel", "Vase handle", "Wall clock", "Yolk", "Zoo", "Broccoli", "Cowboy", "Dolphin splash",
+                "Elf", "Fiddle", "Garage", "Handprint", "Icicle lights", "Jockey", "Kiteboard", "Lock", "Moth", "Nightstand",
+                "Oyster", "Photo frame", "Quilt stitch", "Rope bridge", "Sunglasses", "T-shirt", "Unicorn horn",
+                "Violin bow", "Waterwheel", "Yardstick", "Beehive", "Chalkboard", "Duck", "Eyeglasses", "Fishing rod",
+                "Guitar case", "Hen", "Inkpad", "Jigsaw piece", "Koala", "Lollipop", "Marble statue", "Nutcracker",
+                "Ostrich plume", "Puzzle", "Quilt pattern", "Sailboat", "Teacup saucer", "Volcano top", "Wheelbarrow",
+                "Yarn ball", "Zip tie", "Bluejay", "Comb", "Dice", "Elbow grease", "Fire hydrant", "Gate", "Hedge",
+                "Ice skate", "Jellyfish tentacle", "Kangaroo pouch", "Log cabin", "Magnet clip", "Narwhal", "Opera",
+                "Pumpkin seed", "Quarter", "Ring toss", "Straw hat", "Typewriter", "Vacuum bag", "Water lily",
+                "Xylophone mallet", "Zebra crossing", "Apron", "Binoculars", "Coaster", "Dice cup", "Engine block",
+                "Ferris wheel car", "Gravy boat", "Handkerchief", "Ink bottle", "Jade", "Ketchup", "Lemonade",
+                "Mixer", "Nail polish", "Ornament", "Pancake", "Quilter’s needle", "Rock pile", "Stamp", "Tent peg",
+                "Utility belt", "Vulture", "Walnut", "Yoga mat", "Zeppelin", "Beach towel", "Cupcake", "Doormat",
+                "Elbow chair", "Fence post", "Grapefruit", "Hockey puck", "Ice tray", "Jump rope", "Knob", "Ledge",
+                "Magnet", "Notebook", "Ox cart", "Penguin chick", "Quilt square", "Rocket", "Snowshoe", "Trumpet",
+                "Utensils", "Video game", "Whistle", "Yeti", "Zinnia", "Aquarium", "Bell", "Cotton", "Dartboard",
+                "Envelope", "Footprint", "Garden hoe", "Hurdle", "Ink blot", "Jelly jar", "Karate belt", "Ladder rung",
+                "Milk bottle", "Neon sign", "Obelisk", "Pepper shaker", "Quilt square", "Rose bush", "Sandbox lid",
+                "Tassel", "Unicorn tail", "Vase rim", "Window frame", "Yo-yo string", "Zucchini", "Baseball",
+                "Chicken", "Doorframe", "Exit sign", "Fence rail", "Giraffe neck", "Hot air balloon", "Ink cartridge",
+                "Jump suit", "Kangaroo tail", "Lamp shade", "Mailbox flag", "Nectar", "Octopus arm", "Pinecone",
+                "Quilt lining", "Rubber band", "Shoelace", "Traffic cone", "Vine leaf", "Watch face", "X-ray machine",
+                "Yard gnome", "Zip line", "Bagel", "Cowboy hat", "Dragonfly", "Echo", "Fireplace", "Garden bench",
+                "Ice cream truck", "Jungle gym", "Kite string", "Lemon wedge", "Moat", "Nap sack", "Oak leaf",
+                "Picnic basket", "Quill pen", "Rose petal", "Scissors", "Towel rack", "Umbrella holder", "Vinegar",
+                "Wagon wheel", "Xylophone key", "Yellow jacket", "Bell tower", "Chocolate bar", "Daffodil",
+                "Eraser shavings", "Gumball machine", "Igloo block", "Jumping jack", "Knife handle", "Lantern flame",
+                "Milkshake", "Napkin holder", "Owl nest", "Pool cue", "Quilt patch", "Raindrop", "Soup ladle",
+                "Trophy", "Urchin", "Vase base", "Water droplet", "Yarn skein", "Zip-up hoodie", "Bell chime",
+                "Daisy chain", "Eagle’s nest", "Frog", "Hula hoop", "Jackrabbit", "Kite flyer"
+            ];
+
+        const words_2 = [
+                "Accordion", "Avocado", "Backpack", "Banana", "Barn", "Bat", "Bench", "Bicycle helmet", "Bonfire", "Bookcase",
+                "Bucket", "Bunny", "Cabbage", "Cactus flower", "Calculator", "Camel", "Campground", "Candy", "Cap",
+                "Cereal", "Chair", "Cheese", "Chessboard", "Chimney", "Chocolate", "Chopsticks", "Cliff", "Cloud",
+                "Clown", "Coat", "Coconut", "Compass", "Cone", "Cow", "Crane", "Crow", "Cup", "Curtain", "Dagger",
+                "Daisy", "Dam", "Deck", "Deer", "Diver", "Doll", "Dolphin pod", "Door", "Drawer", "Drone", "Dumbbell",
+                "Eagle feather", "Earth", "Eggshell", "Elevator", "Fan", "Farm", "Faucet", "Ferry", "Field", "Fireplace logs",
+                "Flagpole", "Flaming torch", "Flowerpot", "Football", "Footstool", "Fork", "Fort", "Fountain", "Freezer",
+                "Frog pond", "Frying pan", "Garage door", "Garden path", "Garlic", "Gears", "Gecko", "Ghost", "Gift",
+                "Glacier", "Glider", "Glove", "Goat", "Goggles", "Gold bar", "Grain", "Grandfather clock", "Grapefruit slice",
+                "Guitar pick", "Hailstone", "Hairbrush", "Hammerhead shark", "Handbag", "Hanger", "Harp strings", "Haystack",
+                "Headphones", "Helicopter blade", "Hiking boots", "Hill", "Hockey stick", "Honey jar", "Horse", "Hospital",
+                "Hot tub", "Hourglass", "Ice sculpture", "Igloo entrance", "Iron", "Ivory tusk", "Jar", "Jelly roll", "Jetpack",
+                "Joystick", "Jungle path", "Kangaroo joey", "Kayak", "Kettle whistle", "Keyhole", "Kite surfboard", "Knitting needles",
+                "Koala claws", "Ladybug", "Lantern hook", "Laundry basket", "Lawn mower", "Leaves", "Lemon peel", "Library",
+                "License plate", "Lifeboat", "Light switch", "Lightning bolt", "Lighthouse lens", "Lion cub", "Lipstick",
+                "Lockbox", "Log bench", "Luggage", "Mailbox slot", "Mansion", "Maple leaf", "Market stall", "Mask", "Matchstick",
+                "Maze", "Medal", "Meerkat", "Melon", "Menu", "Microphone", "Microscope", "Milk carton", "Minecart", "Mirror frame",
+                "Mittens", "Model car", "Moon", "Mosaic", "Motorbike", "Mountain goat", "Mushroom", "Music box", "Napkin holder",
+                "Nest of eggs", "Nightstand lamp", "Notebook cover", "Nutshell", "Oar", "Octopus tentacle", "Oil lamp",
+                "Onion ring", "Oven", "Paint palette", "Palm tree", "Pancake stack", "Paper airplane", "Park bench", "Parrot feathers",
+                "Party hat", "Passport", "Peanut butter jar", "Peapod", "Pebble", "Pencil", "Perfume bottle", "Phone case",
+                "Picnic blanket", "Pinecone", "Pirate ship", "Plant pot", "Plastic bottle", "Plate", "Pliers", "Pond", "Popcorn",
+                "Porch swing", "Portrait", "Postcard", "Pot", "Pottery wheel", "Powerline", "Printer", "Puddle", "Pumpkin patch",
+                "Puzzle piece", "Radar", "Raindrop pattern", "Rattle", "Record player", "Recycling bin", "Remote control",
+                "Riverbank", "Rocket ship", "Rope ladder", "Rowboat", "Rug", "Sail", "Sand dune", "Sandcastle", "Scarecrow",
+                "School bus", "Seagull", "Seed packet", "Shamrock", "Shark fin", "Sheep", "Shelf", "Shield", "Shoebox", "Shovel",
+                "Signpost", "Sink", "Ski goggles", "Sleeping bag", "Slippers", "Smoke", "Snail shell", "Snowflake", "Soap dish",
+                "Soccer goal", "Sofa", "Spider", "Spike", "Spinning top", "Sponge", "Spring", "Sprinkler", "Stadium", "Stapler",
+                "Statue", "Steeple", "Stethoscope", "Stool", "Stop sign", "Stove", "Stream", "Streetlamp", "Suitcase", "Sunflower",
+                "Surfboard leash", "Swamp", "Swing", "Sword", "Table lamp", "Tail", "Tank", "Tattoo", "Teeth", "Telephone pole",
+                "Telescope lens", "Temple", "Tent pole", "Terrace", "Thermometer", "Throne", "Thundercloud", "Toaster", "Toilet paper",
+                "Toolbox", "Top hat", "Tower", "Traffic light", "Train track", "Trash can", "Treasure chest", "Tricycle", "Trolley",
+                "Trophy case", "Truck", "Tuba", "Tunnel", "Turkey", "Turtleneck", "Typewriter keys", "Umbrella hook", "Urn",
+                "Vacuum cleaner", "Valley", "Vanilla pod", "Vault door", "Vending machine", "Vest pocket", "Vineyard", "Violin case",
+                "Volleyball", "Wall art", "Water pitcher", "Water slide", "Water tower", "Watermelon rind", "Web", "Wedding ring",
+                "Whale tail", "Wheel", "Whistle chain", "Windsock", "Windsurfer", "Wine bottle", "Wood stove", "Woodpecker hole",
+                "Wreath", "Wrench set", "X-ray sheet", "Yacht", "Yam", "Yard waste", "Yoga block", "Zebra print", "Zen garden",
+                "Zigzag road", "Zinc roof", "Zipper teeth", "Zucchini flower", "Acorn", "Action figure", "Air conditioner",
+                "Alligator", "Almond", "Amber", "Anemone", "Antlers", "Apricot", "Arrowhead", "Ashtray", "Atlas", "Axe", "Bagpipe",
+                "Bakery", "Balloon string", "Bar stool", "Barbecue", "Barn owl", "Barrel", "Bathtub", "Beach ball", "Beanbag",
+                "Bear cub", "Beehive comb", "Belt buckle", "Berry bush", "Billiards table", "Birdcage", "Blackboard", "Blender",
+                "Boat dock", "Bookend", "Bottle opener", "Bow", "Bowtie", "Breadbox", "Bridge pillar", "Brooch", "Brush",
+                "Bubble", "Bulldozer", "Bullet", "Bunk bed", "Butter dish", "Button", "Cabbage leaf", "Cactus spike", "Cake slice",
+                "Canoe", "Canteen", "Car seat", "Card deck", "Carrot", "Cat", "Ceiling fan", "Cell phone", "Chalk", "Champagne glass",
+                "Charcoal", "Cheese grater", "Chess piece", "Chisel", "Christmas ornament", "Clock", "Clothesline", "Cocktail",
+                "Coconut shell", "Coffeepot", "Coin purse", "Colander", "Comb", "Compass needle", "Computer monitor", "Concrete block",
+                "Conveyor belt", "Cookie jar", "Coral reef", "Corn husk", "Cot", "Crayon", "Credit card", "Crest", "Crosswalk",
+                "Crow's nest", "Crutch", "Cupcake liner", "Curtain rod", "Cutting board", "Dagger hilt", "Dancing shoes", "Dart",
+                "Daybed", "Dehumidifier", "Desk lamp", "Dinghy", "Doughnut", "Dragon statue", "Drawer handle", "Driftwood", "Drumsticks",
+                "Duck pond", "Dune buggy", "Dustpan", "Earbud case", "Earrings", "Easel frame", "Echidna", "Egg carton", "Elder tree",
+                "Elevator button", "Embroidery hoop", "Empty bottle", "Exit door", "Extension cord", "Face mask", "Fairy lights",
+                "Farmhouse", "Feather duster", "Ferris wheel axle", "Fishing lure", "Flashlight", "Floor mat", "Flower petals",
+                "Fog", "Folder", "Football jersey", "Footprints", "Forge", "Fossil", "Fountain pen", "Framed picture", "Fridge magnet",
+                "Frost", "Fruit bowl", "Galleon", "Game console", "Garage door opener", "Gardening shears", "Garland", "Gate latch",
+                "Gazebo", "Gemstone", "Glass jar", "Glitter", "Glove compartment", "Gnome", "Goblet", "Gold coin", "Golf ball",
+                "Grill", "Guitar string", "Hairclip", "Hairdryer", "Hamster wheel", "Hand mirror", "Harpoon", "Harness", "Hatchback",
+                "Hearth", "Helmet visor", "Herb garden", "Hiking trail", "Hinges", "Hitch", "Hose nozzle", "Hour hand", "Houseplant"
+            ];
+
+            const words = words_1.concat(words_2);
+
+
+
+        // Function to generate a random word
+        function generateWord() {
+            const randomIndex = Math.floor(Math.random() * words.length);
+            const randomWord = words[randomIndex];
+            document.getElementById("randomWord").textContent = randomWord;
+        }
+    </script>
+</body>
+</html>
